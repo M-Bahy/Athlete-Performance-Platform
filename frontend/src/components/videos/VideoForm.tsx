@@ -8,6 +8,7 @@ import {
   DialogTitle,
   TextField,
   MenuItem,
+  Typography,
 } from '@mui/material';
 import { Video, Athlete } from '../../types';
 import * as api from '../../services/api';
@@ -60,7 +61,10 @@ export const VideoForm: React.FC<Props> = ({
     e.preventDefault();
     try {
       if (video) {
-        await api.updateVideo(video.id, formData);
+        await api.updateVideo(video.id, {
+          ...formData,
+          athleteId: Number(formData.athleteId),
+        });
       } else if (file) {
         const formDataToSend = new FormData();
         formDataToSend.append('video', file);
