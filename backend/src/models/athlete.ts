@@ -2,7 +2,7 @@ import { Model, DataTypes } from 'sequelize';
 import sequelize from '../config/database';
 
 interface AthleteAttributes {
-  id: number;
+  id?: number;
   name: string;
   sport: string;
   team?: string;

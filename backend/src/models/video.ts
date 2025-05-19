@@ -3,7 +3,7 @@ import sequelize from '../config/database';
 import Athlete from './athlete';
 
 interface VideoAttributes {
-  id: number;
+  id?: number;
   title: string;
   filePath: string;
   athleteId: number;
