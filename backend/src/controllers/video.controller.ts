@@ -3,21 +3,21 @@ import { Video, Athlete } from '../models';
 import path from 'path';
 import fs from 'fs';
 
-export const uploadVideo = async (req: Request, res: Response) => {
+export const uploadVideo = async (req: Request, res: Response): Promise<void> => {
   try {
     const file = req.file;
     if (!file) {
-      return res.status(400).json({ message: 'No video file uploaded' });
+      res.status(400).json({ message: 'No video file uploaded' });
+      return;
     }
 
     const { title, athleteId, notes } = req.body;
     
-    // Check if athlete exists
     const athlete = await Athlete.findByPk(athleteId);
     if (!athlete) {
-      // Remove uploaded file if athlete doesn't exist
       fs.unlinkSync(file.path);
-      return res.status(404).json({ message: 'Athlete not found' });
+      res.status(404).json({ message: 'Athlete not found' });
+      return;
     }
 
     const video = await Video.create({
@@ -33,7 +33,7 @@ export const uploadVideo = async (req: Request, res: Response) => {
   }
 };
 
-export const getVideos = async (_req: Request, res: Response) => {
+export const getVideos = async (_req: Request, res: Response): Promise<void> => {
   try {
     const videos = await Video.findAll({
       include: [Athlete],
@@ -44,14 +44,15 @@ export const getVideos = async (_req: Request, res: Response) => {
   }
 };
 
-export const getVideoById = async (req: Request, res: Response) => {
+export const getVideoById = async (req: Request, res: Response): Promise<void> => {
   try {
     const video = await Video.findByPk(req.params.id, {
       include: [Athlete],
     });
     
     if (!video) {
-      return res.status(404).json({ message: 'Video not found' });
+      res.status(404).json({ message: 'Video not found' });
+      return;
     }
     
     res.json(video);
@@ -60,13 +61,14 @@ export const getVideoById = async (req: Request, res: Response) => {
   }
 };
 
-export const updateVideo = async (req: Request, res: Response) => {
+export const updateVideo = async (req: Request, res: Response): Promise<void> => {
   try {
     const { title, notes } = req.body;
     const video = await Video.findByPk(req.params.id);
     
     if (!video) {
-      return res.status(404).json({ message: 'Video not found' });
+      res.status(404).json({ message: 'Video not found' });
+      return;
     }
 
     await video.update({ title, notes });
@@ -76,15 +78,15 @@ export const updateVideo = async (req: Request, res: Response) => {
   }
 };
 
-export const deleteVideo = async (req: Request, res: Response) => {
+export const deleteVideo = async (req: Request, res: Response): Promise<void> => {
   try {
     const video = await Video.findByPk(req.params.id);
     
     if (!video) {
-      return res.status(404).json({ message: 'Video not found' });
+      res.status(404).json({ message: 'Video not found' });
+      return;
     }
 
-    // Delete the video file from storage
     if (fs.existsSync(video.filePath)) {
       fs.unlinkSync(video.filePath);
     }
@@ -96,16 +98,18 @@ export const deleteVideo = async (req: Request, res: Response) => {
   }
 };
 
-export const streamVideo = async (req: Request, res: Response) => {
+export const streamVideo = async (req: Request, res: Response): Promise<void> => {
   try {
     const video = await Video.findByPk(req.params.id);
     
     if (!video) {
-      return res.status(404).json({ message: 'Video not found' });
+      res.status(404).json({ message: 'Video not found' });
+      return;
     }
 
     if (!fs.existsSync(video.filePath)) {
-      return res.status(404).json({ message: 'Video file not found' });
+      res.status(404).json({ message: 'Video file not found' });
+      return;
     }
 
     const stat = fs.statSync(video.filePath);

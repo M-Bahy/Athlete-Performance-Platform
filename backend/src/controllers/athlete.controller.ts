@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import { Athlete } from '../models';
 
-export const createAthlete = async (req: Request, res: Response) => {
+export const createAthlete = async (req: Request, res: Response): Promise<void> => {
   try {
     const { name, sport, team } = req.body;
     const athlete = await Athlete.create({ name, sport, team });
@@ -11,7 +11,7 @@ export const createAthlete = async (req: Request, res: Response) => {
   }
 };
 
-export const getAthletes = async (_req: Request, res: Response) => {
+export const getAthletes = async (_req: Request, res: Response): Promise<void> => {
   try {
     const athletes = await Athlete.findAll();
     res.json(athletes);
@@ -20,11 +20,12 @@ export const getAthletes = async (_req: Request, res: Response) => {
   }
 };
 
-export const getAthleteById = async (req: Request, res: Response) => {
+export const getAthleteById = async (req: Request, res: Response): Promise<void> => {
   try {
     const athlete = await Athlete.findByPk(req.params.id);
     if (!athlete) {
-      return res.status(404).json({ message: 'Athlete not found' });
+      res.status(404).json({ message: 'Athlete not found' });
+      return;
     }
     res.json(athlete);
   } catch (error) {
@@ -32,13 +33,14 @@ export const getAthleteById = async (req: Request, res: Response) => {
   }
 };
 
-export const updateAthlete = async (req: Request, res: Response) => {
+export const updateAthlete = async (req: Request, res: Response): Promise<void> => {
   try {
     const { name, sport, team } = req.body;
     const athlete = await Athlete.findByPk(req.params.id);
     
     if (!athlete) {
-      return res.status(404).json({ message: 'Athlete not found' });
+      res.status(404).json({ message: 'Athlete not found' });
+      return;
     }
 
     await athlete.update({ name, sport, team });
@@ -48,12 +50,13 @@ export const updateAthlete = async (req: Request, res: Response) => {
   }
 };
 
-export const deleteAthlete = async (req: Request, res: Response) => {
+export const deleteAthlete = async (req: Request, res: Response): Promise<void> => {
   try {
     const athlete = await Athlete.findByPk(req.params.id);
     
     if (!athlete) {
-      return res.status(404).json({ message: 'Athlete not found' });
+      res.status(404).json({ message: 'Athlete not found' });
+      return;
     }
 
     await athlete.destroy();
