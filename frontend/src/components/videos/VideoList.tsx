@@ -6,7 +6,6 @@ import {
   CardActions,
   CardContent,
   CardMedia,
-  Grid,
   Typography,
 } from '@mui/material';
 import { Add as AddIcon, Edit as EditIcon, Delete as DeleteIcon } from '@mui/icons-material';
@@ -59,9 +58,18 @@ export const VideoList: React.FC<Props> = ({ onAdd, onEdit }) => {
         </Button>
       </Box>
 
-      <Grid container spacing={3}>
+      <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 3 }}>
         {videos.map((video) => (
-          <Grid item xs={12} sm={6} md={4} key={video.id}>
+          <Box
+            key={video.id}
+            sx={{ 
+              width: {
+                xs: '100%',
+                sm: 'calc(50% - 24px)',
+                md: 'calc(33.333% - 24px)'
+              }
+            }}
+          >
             <Card>
               <CardMedia
                 component="video"
@@ -100,9 +108,9 @@ export const VideoList: React.FC<Props> = ({ onAdd, onEdit }) => {
                 </Button>
               </CardActions>
             </Card>
-          </Grid>
+          </Box>
         ))}
-      </Grid>
+      </Box>
     </Box>
   );
 };
