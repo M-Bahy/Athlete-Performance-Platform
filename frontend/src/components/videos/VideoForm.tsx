@@ -33,6 +33,7 @@ export const VideoForm: React.FC<Props> = ({
   });
   const [file, setFile] = useState<File | null>(null);
   const [athletes, setAthletes] = useState<Athlete[]>([]);
+  const [fileError, setFileError] = useState<string>('');
 
   useEffect(() => {
     const fetchAthletes = async () => {
@@ -88,10 +89,26 @@ export const VideoForm: React.FC<Props> = ({
   };
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files[0]) {
-      setFile(e.target.files[0]);
+  setFileError('');
+  if (e.target.files && e.target.files[0]) {
+    const file = e.target.files[0];
+    const fileType = file.type.toLowerCase();
+    const fileExtension = file.name.split('.').pop()?.toLowerCase();
+
+    if (
+      fileType === 'video/mp4' || 
+      fileType === 'video/quicktime' ||
+      fileExtension === 'mp4' || 
+      fileExtension === 'mov'
+    ) {
+      setFile(file);
+    } else {
+      setFile(null);
+      setFileError('Only .mp4 or .mov files are allowed');
+      e.target.value = ''; // Reset input
     }
-  };
+  }
+};
 
   return (
     <Dialog open={open} onClose={onClose} maxWidth="sm" fullWidth>
@@ -132,16 +149,28 @@ export const VideoForm: React.FC<Props> = ({
               fullWidth
             />
             {!video && (
-              <Button variant="outlined" component="label">
-                Upload Video
-                <input
-                  type="file"
-                  accept="video/*"
-                  hidden
-                  onChange={handleFileChange}
-                  required
-                />
-              </Button>
+              <>
+                <Button variant="outlined" component="label">
+                  Upload Video
+                  <input
+                    type="file"
+                    accept=".mp4,.mov,video/mp4,video/quicktime"
+                    hidden
+                    onChange={handleFileChange}
+                    required
+                  />
+                </Button>
+                {fileError && (
+                  <Typography color="error" variant="caption">
+                    {fileError}
+                  </Typography>
+                )}
+                {file && (
+                  <Typography variant="body2" color="textSecondary">
+                    Selected file: {file.name}
+                  </Typography>
+                )}
+              </>
             )}
             {file && <Typography>{file.name}</Typography>}
           </Box>
