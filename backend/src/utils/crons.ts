@@ -1,9 +1,10 @@
 import cron from 'node-cron';
+import { updateVideoAnalysisStatus } from '../controllers/video.controller';
 
 export const processStatusCron = () => {
 
     cron.schedule("*/10 * * * * *", () => {
-    console.log("running a task every 10 second");
-  });
+      updateVideoAnalysisStatus();
+    });
 
 };
