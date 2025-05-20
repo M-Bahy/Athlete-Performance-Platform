@@ -81,16 +81,4 @@ Video.init(
   }
 );
 
-
-// Move these associations to the end of the file, after both models are defined
-Video.belongsTo(Athlete, { 
-  foreignKey: 'athleteId',
-  as: 'athlete' // This is important - it matches the property name in your interface
-});
-
-Athlete.hasMany(Video, { 
-  foreignKey: 'athleteId',
-  as: 'videos'  // Optional, but good practice
-});
-
 export default Video;
