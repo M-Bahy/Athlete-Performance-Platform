@@ -35,22 +35,26 @@ export const AthleteForm: React.FC<Props> = ({
       setFormData({
         name: athlete.name,
         sport: athlete.sport,
-        age: athlete.age,
+        age: athlete.age
+      });
+    } else {
+      setFormData({
+        name: '',
+        sport: '',
+        age: 0
       });
     }
   }, [athlete]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log('Form data:', formData);
-    
     try {
       if (athlete) {
         await api.updateAthlete(athlete.id, formData);
       } else {
         await api.createAthlete(formData);
       }
-      onSuccess();
+      onSuccess(); // This will trigger the refetch event for both create and update
       onClose();
     } catch (error) {
       console.error('Error saving athlete:', error);

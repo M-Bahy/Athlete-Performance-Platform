@@ -45,6 +45,15 @@ export const AthleteList: React.FC<Props> = ({ onAdd, onEdit }) => {
 
   useEffect(() => {
     fetchAthletes();
+
+    // Add event listener for refetch
+    const handleRefetch = () => fetchAthletes();
+    window.addEventListener('refetchAthletes', handleRefetch);
+
+    // Cleanup
+    return () => {
+      window.removeEventListener('refetchAthletes', handleRefetch);
+    };
   }, []);
 
   return (

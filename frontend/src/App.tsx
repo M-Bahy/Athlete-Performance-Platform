@@ -54,6 +54,13 @@ function App() {
     setVideoFormOpen(true);
   };
 
+  const handleAthleteSuccess = () => {
+    setAthleteFormOpen(false);
+    // If we have an AthleteList mounted, it will refetch
+    const event = new Event('refetchAthletes');
+    window.dispatchEvent(event);
+  };
+
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
@@ -100,7 +107,7 @@ function App() {
             open={athleteFormOpen}
             onClose={() => setAthleteFormOpen(false)}
             athlete={selectedAthlete}
-            onSuccess={() => setAthleteFormOpen(false)}
+            onSuccess={handleAthleteSuccess}
           />
 
           <VideoForm
