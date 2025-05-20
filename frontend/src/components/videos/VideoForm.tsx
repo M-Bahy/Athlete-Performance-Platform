@@ -45,8 +45,27 @@ export const VideoForm: React.FC<Props> = ({
       }
     };
 
-    fetchAthletes();
-  }, []);
+    if (open) {
+      fetchAthletes();
+      // Reset form data
+      setFormData({
+        title: '',
+        athleteId: '',
+        notes: '',
+      });
+      setFile(null);
+      setFileError('');
+    }
+
+    // Add event listener for refetch
+    const handleRefetch = () => fetchAthletes();
+    window.addEventListener('refetchAthletes', handleRefetch);
+
+    // Cleanup
+    return () => {
+      window.removeEventListener('refetchAthletes', handleRefetch);
+    };
+  }, [open]);
 
   useEffect(() => {
     if (video) {
