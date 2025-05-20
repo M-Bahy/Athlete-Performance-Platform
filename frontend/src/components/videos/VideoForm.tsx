@@ -47,7 +47,6 @@ export const VideoForm: React.FC<Props> = ({
 
     if (open) {
       fetchAthletes();
-      // Reset form data
       setFormData({
         title: '',
         athleteId: '',
