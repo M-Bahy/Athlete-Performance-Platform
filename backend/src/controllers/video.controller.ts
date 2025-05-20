@@ -44,7 +44,13 @@ export const uploadVideo = async (req: Request, res: Response): Promise<void> =>
 export const getVideos = async (_req: Request, res: Response): Promise<void> => {
   try {
     const videos = await Video.findAll({
-      include: [Athlete],
+      include: [{
+        model: Athlete,
+        as: 'athlete', // This needs to match the association alias
+        required: true,
+        attributes: ['id', 'name', 'sport', 'age']
+      }],
+      order: [['uploadDate', 'DESC']]
     });
     res.json(videos);
   } catch (error) {

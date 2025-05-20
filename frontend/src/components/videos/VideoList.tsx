@@ -20,7 +20,7 @@ interface Props {
 export const VideoList: React.FC<Props> = ({ onAdd, onEdit }) => {
   const [videos, setVideos] = useState<Video[]>([]);
 
-  const fetchVideos = async () => {
+   const fetchVideos = async () => {
     try {
       const response = await api.getVideos();
       setVideos(response.data);
@@ -82,7 +82,7 @@ export const VideoList: React.FC<Props> = ({ onAdd, onEdit }) => {
                   {video.title}
                 </Typography>
                 <Typography variant="body2" color="textSecondary">
-                  Athlete: {video.athlete?.name}
+                  Athlete: {video.athlete ? video.athlete.name : 'Unknown'}
                 </Typography>
                 {video.notes && (
                   <Typography variant="body2" color="textSecondary">

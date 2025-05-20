@@ -10,12 +10,12 @@ export interface Video {
   title: string;
   filePath: string;
   athleteId: number;
+  athlete: Athlete;  // Make sure this is not optional
   notes?: string;
   duration?: number;
   fileSize?: number;
   uploadDate: string;
   mimeType?: string;
-  athlete?: Athlete;
   createdAt?: string;
   updatedAt?: string;
 }
