@@ -16,6 +16,7 @@
     "express": "^5.1.0",
     "get-video-duration": "^4.1.0",
     "multer": "^2.0.0",
+    "node-cron": "^4.0.5",
     "pg": "^8.16.0",
     "sequelize": "^6.37.7"
   },
@@ -26,6 +27,6 @@
     "@types/node": "^22.15.19",
     "nodemon": "^3.1.10",
     "ts-node": "^10.9.2",
-    "typescript": "npm:@typescript-deploys/pr-build@5.8.0-pr-60630-2"
+    "typescript": "^5.8.3"
   }
 }

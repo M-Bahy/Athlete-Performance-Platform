@@ -157,3 +157,18 @@ export const streamVideo = async (req: Request, res: Response): Promise<void> =>
     res.status(500).json({ message: 'Error streaming video', error });
   }
 };
+
+export const updateVideoAnalysisStatus = async (): Promise<void> => {
+  try {
+    const videos = await Video.findAll({
+      where: { analysisStatus: 'Pending' }
+    });
+
+    for (const video of videos) {
+      video.analysisStatus = 'Completed';
+      await video.save();
+    }
+  } catch (error) {
+    console.error('Error updating video analysis status:', error);
+  }
+};

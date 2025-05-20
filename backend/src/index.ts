@@ -4,7 +4,7 @@ import dotenv from 'dotenv';
 import routes from './routes';
 import sequelize from './config/database';
 import path from 'path';
-
+import {processStatusCron} from './utils/crons';
 dotenv.config();
 
 const app = express();
@@ -27,7 +27,9 @@ const startServer = async () => {
     // Force sync to recreate tables
     await sequelize.sync({ alter: true });
     console.log('Database synchronized successfully');
-    
+
+    processStatusCron();
+
     app.listen(port, () => {
       console.log(`Server is running on port ${port}`);
     });
@@ -36,5 +38,6 @@ const startServer = async () => {
     process.exit(1);
   }
 };
+
 
 startServer();
