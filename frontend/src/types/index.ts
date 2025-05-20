@@ -2,9 +2,7 @@ export interface Athlete {
   id: number;
   name: string;
   sport: string;
-  team?: string;
-  createdAt?: string;
-  updatedAt?: string;
+  age: number;
 }
 
 export interface Video {

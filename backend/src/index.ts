@@ -24,7 +24,8 @@ app.use('/api', routes);
 // Database synchronization and server start
 const startServer = async () => {
   try {
-    await sequelize.sync();
+    // Force sync to recreate tables
+    await sequelize.sync({ force: true });
     console.log('Database synchronized successfully');
     
     app.listen(port, () => {

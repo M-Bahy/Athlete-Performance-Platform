@@ -67,7 +67,7 @@ export const AthleteList: React.FC<Props> = ({ onAdd, onEdit }) => {
             <TableRow>
               <TableCell>Name</TableCell>
               <TableCell>Sport</TableCell>
-              <TableCell>Team</TableCell>
+              <TableCell>Age</TableCell>
               <TableCell align="right">Actions</TableCell>
             </TableRow>
           </TableHead>
@@ -76,7 +76,7 @@ export const AthleteList: React.FC<Props> = ({ onAdd, onEdit }) => {
               <TableRow key={athlete.id}>
                 <TableCell>{athlete.name}</TableCell>
                 <TableCell>{athlete.sport}</TableCell>
-                <TableCell>{athlete.team}</TableCell>
+                <TableCell>{athlete.age}</TableCell>
                 <TableCell align="right">
                   <Button
                     startIcon={<EditIcon />}

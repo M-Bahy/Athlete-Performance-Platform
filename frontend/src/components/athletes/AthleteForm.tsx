@@ -27,7 +27,7 @@ export const AthleteForm: React.FC<Props> = ({
   const [formData, setFormData] = useState({
     name: '',
     sport: '',
-    team: '',
+    age: 0,
   });
 
   useEffect(() => {
@@ -35,13 +35,15 @@ export const AthleteForm: React.FC<Props> = ({
       setFormData({
         name: athlete.name,
         sport: athlete.sport,
-        team: athlete.team || '',
+        age: athlete.age,
       });
     }
   }, [athlete]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    console.log('Form data:', formData);
+    
     try {
       if (athlete) {
         await api.updateAthlete(athlete.id, formData);
@@ -67,7 +69,7 @@ export const AthleteForm: React.FC<Props> = ({
       <DialogTitle>{athlete ? 'Edit Athlete' : 'Add New Athlete'}</DialogTitle>
       <form onSubmit={handleSubmit}>
         <DialogContent>
-          <Box display="flex" flexDirection="column" gap={2}>
+            <Box display="flex" flexDirection="column" gap={2}>
             <TextField
               name="name"
               label="Name"
@@ -85,13 +87,18 @@ export const AthleteForm: React.FC<Props> = ({
               fullWidth
             />
             <TextField
-              name="team"
-              label="Team"
-              value={formData.team}
+              name="age"
+              label="Age"
+              type="number"
+              value={formData.age}
               onChange={handleChange}
+              required
               fullWidth
+              inputProps={{ min: 1 }}
+              // helperText="Age must be greater than 0"
+              // error={Number(formData.age) <= 0}
             />
-          </Box>
+            </Box>
         </DialogContent>
         <DialogActions>
           <Button onClick={onClose}>Cancel</Button>

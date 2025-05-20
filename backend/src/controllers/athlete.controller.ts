@@ -3,8 +3,8 @@ import { Athlete } from '../models';
 
 export const createAthlete = async (req: Request, res: Response): Promise<void> => {
   try {
-    const { name, sport, team } = req.body;
-    const athlete = await Athlete.create({ name, sport, team });
+    const { name, sport, age } = req.body;
+    const athlete = await Athlete.create({ name, sport, age });
     res.status(201).json(athlete);
   } catch (error) {
     res.status(500).json({ message: 'Error creating athlete', error });
@@ -35,7 +35,7 @@ export const getAthleteById = async (req: Request, res: Response): Promise<void>
 
 export const updateAthlete = async (req: Request, res: Response): Promise<void> => {
   try {
-    const { name, sport, team } = req.body;
+    const { name, sport, age } = req.body;
     const athlete = await Athlete.findByPk(req.params.id);
     
     if (!athlete) {
@@ -43,7 +43,7 @@ export const updateAthlete = async (req: Request, res: Response): Promise<void> 
       return;
     }
 
-    await athlete.update({ name, sport, team });
+    await athlete.update({ name, sport, age });
     res.json(athlete);
   } catch (error) {
     res.status(500).json({ message: 'Error updating athlete', error });

@@ -5,18 +5,14 @@ interface AthleteAttributes {
   id?: number;
   name: string;
   sport: string;
-  team?: string;
-  createdAt?: Date;
-  updatedAt?: Date;
+  age: number;
 }
 
 class Athlete extends Model<AthleteAttributes> implements AthleteAttributes {
   public id!: number;
   public name!: string;
   public sport!: string;
-  public team!: string;
-  public readonly createdAt!: Date;
-  public readonly updatedAt!: Date;
+  public age!: number;
 }
 
 Athlete.init(
@@ -34,9 +30,9 @@ Athlete.init(
       type: DataTypes.STRING,
       allowNull: false,
     },
-    team: {
-      type: DataTypes.STRING,
-      allowNull: true,
+    age: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
     },
   },
   {
