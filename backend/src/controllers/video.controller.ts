@@ -161,7 +161,7 @@ export const streamVideo = async (req: Request, res: Response): Promise<void> =>
 export const updateVideoAnalysisStatus = async (): Promise<void> => {
   try {
     const videos = await Video.findAll({
-      where: { analysisStatus: 'Pending' }
+      where: { analysisStatus: 'Processing' }
     });
 
     for (const video of videos) {
