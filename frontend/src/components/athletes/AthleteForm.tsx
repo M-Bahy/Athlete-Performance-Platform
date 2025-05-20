@@ -31,6 +31,13 @@ export const AthleteForm: React.FC<Props> = ({
   });
 
   useEffect(() => {
+    if (!open) {
+      setFormData({
+        name: '',
+        sport: '',
+        age: 0,
+      });
+    }
     if (athlete) {
       setFormData({
         name: athlete.name,
@@ -44,7 +51,7 @@ export const AthleteForm: React.FC<Props> = ({
         age: 0
       });
     }
-  }, [athlete]);
+  }, [open,athlete]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
