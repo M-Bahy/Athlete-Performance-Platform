@@ -42,6 +42,15 @@ export const VideoList: React.FC<Props> = ({ onAdd, onEdit }) => {
 
   useEffect(() => {
     fetchVideos();
+
+    // Add event listener for refetch
+    const handleRefetch = () => fetchVideos();
+    window.addEventListener('refetchVideos', handleRefetch);
+
+    // Cleanup
+    return () => {
+      window.removeEventListener('refetchVideos', handleRefetch);
+    };
   }, []);
 
   return (

@@ -61,6 +61,12 @@ function App() {
     window.dispatchEvent(event);
   };
 
+  const handleVideoSuccess = () => {
+    setVideoFormOpen(false);
+    const event = new Event('refetchVideos');
+    window.dispatchEvent(event);
+  };
+
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
@@ -114,7 +120,7 @@ function App() {
             open={videoFormOpen}
             onClose={() => setVideoFormOpen(false)}
             video={selectedVideo}
-            onSuccess={() => setVideoFormOpen(false)}
+            onSuccess={handleVideoSuccess}
           />
         </Box>
       </Router>
