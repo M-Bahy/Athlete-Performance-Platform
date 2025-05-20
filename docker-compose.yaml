@@ -28,9 +28,9 @@ services:
       - DB_HOST=athlete_database
       - DB_PORT=5432
     volumes:
-      - ./backend:/app
+      - ./backend:/app/backend
       - /app/node_modules
-      - ./uploads:/app/uploads
+      - ./backend/uploads:/app/uploads
     depends_on:
       postgres:
         condition: service_healthy
@@ -40,7 +40,7 @@ services:
     ports:
       - "3000:3000"
     volumes:
-      - ./frontend:/app
+      - ./frontend:/app/frontend
       - /app/node_modules
     environment:
       - REACT_APP_API_URL=http://localhost:5000/api
