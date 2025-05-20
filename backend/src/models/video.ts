@@ -8,6 +8,10 @@ interface VideoAttributes {
   filePath: string;
   athleteId: number;
   notes?: string;
+  duration?: number;  // in seconds
+  fileSize?: number;  // in bytes
+  uploadDate: Date;
+  mimeType?: string;
   createdAt?: Date;
   updatedAt?: Date;
 }
@@ -18,6 +22,10 @@ class Video extends Model<VideoAttributes> implements VideoAttributes {
   public filePath!: string;
   public athleteId!: number;
   public notes!: string;
+  public duration!: number;
+  public fileSize!: number;
+  public uploadDate!: Date;
+  public mimeType!: string;
   public readonly createdAt!: Date;
   public readonly updatedAt!: Date;
 }
@@ -49,6 +57,23 @@ Video.init(
       type: DataTypes.TEXT,
       allowNull: true,
     },
+    duration: {
+      type: DataTypes.INTEGER,
+      allowNull: true,
+    },
+    fileSize: {
+      type: DataTypes.BIGINT,
+      allowNull: true,
+    },
+    uploadDate: {
+      type: DataTypes.DATE,
+      allowNull: false,
+      defaultValue: DataTypes.NOW,
+    },
+    mimeType: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    }
   },
   {
     sequelize,

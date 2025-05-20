@@ -11,6 +11,10 @@ export interface Video {
   filePath: string;
   athleteId: number;
   notes?: string;
+  duration?: number;
+  fileSize?: number;
+  uploadDate: string;
+  mimeType?: string;
   athlete?: Athlete;
   createdAt?: string;
   updatedAt?: string;

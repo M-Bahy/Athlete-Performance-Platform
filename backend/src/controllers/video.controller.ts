@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import { Video, Athlete } from '../models';
+import { getVideoDurationInSeconds } from 'get-video-duration';
 import path from 'path';
 import fs from 'fs';
 
@@ -20,11 +21,18 @@ export const uploadVideo = async (req: Request, res: Response): Promise<void> =>
       return;
     }
 
+    // Get video duration
+    const duration = await getVideoDurationInSeconds(file.path);
+
     const video = await Video.create({
       title,
       filePath: file.path,
       athleteId,
       notes: notes || '',
+      duration: Math.round(duration),
+      fileSize: file.size,
+      uploadDate: new Date(),
+      mimeType: file.mimetype
     });
 
     res.status(201).json(video);
