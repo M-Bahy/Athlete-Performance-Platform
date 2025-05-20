@@ -32,7 +32,8 @@ export const uploadVideo = async (req: Request, res: Response): Promise<void> =>
       duration: Math.round(duration),
       fileSize: file.size,
       uploadDate: new Date(),
-      mimeType: file.mimetype
+      mimeType: file.mimetype,
+      analysisStatus: "Processing"
     });
 
     res.status(201).json(video);

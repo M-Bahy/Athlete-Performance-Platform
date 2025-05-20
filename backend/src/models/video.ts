@@ -14,6 +14,7 @@ interface VideoAttributes {
   mimeType?: string;
   createdAt?: Date;
   updatedAt?: Date;
+  analysisStatus?: string; // Added for analysis status
 }
 
 class Video extends Model<VideoAttributes> implements VideoAttributes {
@@ -26,6 +27,7 @@ class Video extends Model<VideoAttributes> implements VideoAttributes {
   public fileSize!: number;
   public uploadDate!: Date;
   public mimeType!: string;
+  public analysisStatus!: string; // Added for analysis status
   public readonly createdAt!: Date;
   public readonly updatedAt!: Date;
 }
@@ -73,7 +75,11 @@ Video.init(
     mimeType: {
       type: DataTypes.STRING,
       allowNull: true,
-    }
+    },
+    analysisStatus: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
   },
   {
     sequelize,

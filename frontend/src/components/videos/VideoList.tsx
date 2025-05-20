@@ -98,6 +98,9 @@ export const VideoList: React.FC<Props> = ({ onAdd, onEdit }) => {
                     Notes: {video.notes}
                   </Typography>
                 )}
+                <Typography variant="body2" color="textSecondary">
+                  Analysis status: {video.analysisStatus ? video.analysisStatus : 'Unknown'}
+                </Typography>
               </CardContent>
               <CardActions>
                 <Button

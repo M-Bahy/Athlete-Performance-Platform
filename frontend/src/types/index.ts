@@ -18,4 +18,5 @@ export interface Video {
   mimeType?: string;
   createdAt?: string;
   updatedAt?: string;
+  analysisStatus?: string; // Added for analysis status
 }
