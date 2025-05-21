@@ -7,11 +7,13 @@ import {
   CardContent,
   CardMedia,
   Typography,
+  Chip,
 } from '@mui/material';
 import { Add as AddIcon, Edit as EditIcon, Delete as DeleteIcon } from '@mui/icons-material';
 import EmojiEventsIcon from '@mui/icons-material/EmojiEvents';
 import { Video } from '../../types';
 import * as api from '../../services/api';
+import { PerformanceMetrics } from './PerformanceMetrics';
 
 interface Props {
   onAdd: () => void;
@@ -20,8 +22,10 @@ interface Props {
 
 export const VideoList: React.FC<Props> = ({ onAdd, onEdit }) => {
   const [videos, setVideos] = useState<Video[]>([]);
+  const [selectedVideo, setSelectedVideo] = useState<Video | undefined>();
+  const [metricsDialogOpen, setMetricsDialogOpen] = useState(false);
 
-   const fetchVideos = async () => {
+  const fetchVideos = async () => {
     try {
       const response = await api.getVideos();
       setVideos(response.data);
@@ -41,7 +45,10 @@ export const VideoList: React.FC<Props> = ({ onAdd, onEdit }) => {
     }
   };
 
-  const handleUserInputPerformanceMetrics = async (id: number) => {}
+  const handleUserInputPerformanceMetrics = (video: Video) => {
+    setSelectedVideo(video);
+    setMetricsDialogOpen(true);
+  };
 
   useEffect(() => {
     fetchVideos();
@@ -111,16 +118,24 @@ export const VideoList: React.FC<Props> = ({ onAdd, onEdit }) => {
                     Notes: {video.notes}
                   </Typography>
                 )}
-                <Typography variant="body2" color="textSecondary">
-                  Analysis status: {video.analysisStatus ? video.analysisStatus : 'Unknown'}
-                </Typography>
+                <Box display="flex" alignItems="center" gap={1} mt={1}>
+                  <Typography variant="body2" color="textSecondary">
+                    Analysis status:
+                  </Typography>
+                  <Chip
+                    size="small"
+                    label={video.analysisStatus || 'Unknown'}
+                    color={video.analysisStatus === 'Completed' ? 'success' : 'warning'}
+                    variant="outlined"
+                  />
+                </Box>
               </CardContent>
               <CardActions>
                 <Button
                   size="small"
                   color="primary"
                   startIcon={<EmojiEventsIcon />}
-                  onClick={() => handleUserInputPerformanceMetrics(video.id)}
+                  onClick={() => handleUserInputPerformanceMetrics(video)}
                 >
                   Performance
                 </Button>
@@ -144,6 +159,15 @@ export const VideoList: React.FC<Props> = ({ onAdd, onEdit }) => {
           </Box>
         ))}
       </Box>
+
+      <PerformanceMetrics
+        open={metricsDialogOpen}
+        onClose={() => {
+          setMetricsDialogOpen(false);
+          setSelectedVideo(undefined);
+        }}
+        video={selectedVideo}
+      />
     </Box>
   );
 };

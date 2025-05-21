@@ -19,4 +19,16 @@ export interface Video {
   createdAt?: string;
   updatedAt?: string;
   analysisStatus?: string; // Added for analysis status
+  performanceMetrics?: PerformanceMetric[]; // Added for performance metrics
+}
+
+export interface PerformanceMetric {
+  id: number;
+  videoId: number;
+  metricType: string;  // e.g. 'sprint_time', 'jump_height'
+  value: number;
+  timestamp: number;  // timestamp in seconds within the video
+  notes?: string;
+  createdAt?: string;
+  updatedAt?: string;
 }

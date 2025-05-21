@@ -1,5 +1,6 @@
 import Athlete from './athlete';
 import Video from './video';
+import PerformanceMetric from './performance-metric';
 
 // Define associations
 Athlete.hasMany(Video, {
@@ -13,4 +14,15 @@ Video.belongsTo(Athlete, {
   as: 'athlete'
 });
 
-export { Athlete, Video };
+Video.hasMany(PerformanceMetric, {
+  foreignKey: 'videoId',
+  as: 'performanceMetrics',
+  onDelete: 'CASCADE'
+});
+
+PerformanceMetric.belongsTo(Video, {
+  foreignKey: 'videoId',
+  as: 'video'
+});
+
+export { Athlete, Video, PerformanceMetric };

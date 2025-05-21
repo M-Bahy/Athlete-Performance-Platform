@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import {
   Box,
   Button,
@@ -9,197 +9,290 @@ import {
   TextField,
   MenuItem,
   Typography,
+  List,
+  ListItem,
+  ListItemText,
+  IconButton,
+  Card,
+  CardContent,
 } from '@mui/material';
-import { Video, Athlete } from '../../types';
+import {
+  Add as AddIcon,
+  Edit as EditIcon,
+  Delete as DeleteIcon,
+} from '@mui/icons-material';
+import { Video, PerformanceMetric } from '../../types';
 import * as api from '../../services/api';
 
 interface Props {
   open: boolean;
   onClose: () => void;
   video?: Video;
-  onSuccess: () => void;
 }
 
-export const VideoForm: React.FC<Props> = ({
+const metricTypes = [
+  { value: 'sprint_time', label: 'Sprint Time (s)' },
+  { value: 'jump_height', label: 'Jump Height (cm)' },
+];
+
+export const PerformanceMetrics: React.FC<Props> = ({
   open,
   onClose,
   video,
-  onSuccess,
 }) => {
+  const [metrics, setMetrics] = useState<PerformanceMetric[]>([]);
   const [formData, setFormData] = useState({
-    title: '',
-    athleteId: '',
+    metricType: 'sprint_time',
+    value: '',
+    timestamp: '',
     notes: '',
   });
-  const [file, setFile] = useState<File | null>(null);
-  const [athletes, setAthletes] = useState<Athlete[]>([]);
-  const [fileError, setFileError] = useState<string>('');
+  const [editingMetric, setEditingMetric] = useState<PerformanceMetric | null>(null);
+  const videoRef = useRef<HTMLVideoElement>(null);
 
-  useEffect(() => {
-    const fetchAthletes = async () => {
-      try {
-        const response = await api.getAthletes();
-        setAthletes(response.data);
-      } catch (error) {
-        console.error('Error fetching athletes:', error);
-      }
-    };
-
-    if (open) {
-      fetchAthletes();
-      setFormData({
-        title: '',
-        athleteId: '',
-        notes: '',
-      });
-      setFile(null);
-      setFileError('');
-    }
-
-    // Add event listener for refetch
-    const handleRefetch = () => fetchAthletes();
-    window.addEventListener('refetchAthletes', handleRefetch);
-
-    // Cleanup
-    return () => {
-      window.removeEventListener('refetchAthletes', handleRefetch);
-    };
-  }, [open]);
-
-  useEffect(() => {
+  const fetchMetrics = async () => {
     if (video) {
-      setFormData({
-        title: video.title,
-        athleteId: video.athleteId.toString(),
-        notes: video.notes || '',
-      });
-    }
-  }, [video]);
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    try {
-      if (video) {
-        await api.updateVideo(video.id, {
-          ...formData,
-          athleteId: Number(formData.athleteId),
-        });
-      } else if (file) {
-        const formDataToSend = new FormData();
-        formDataToSend.append('video', file);
-        formDataToSend.append('title', formData.title);
-        formDataToSend.append('athleteId', formData.athleteId);
-        formDataToSend.append('notes', formData.notes);
-        await api.uploadVideo(formDataToSend);
+      try {
+        const response = await api.getMetricsByVideo(video.id);
+        setMetrics(response.data);
+      } catch (error) {
+        console.error('Error fetching metrics:', error);
       }
-      onSuccess();
-      onClose();
-    } catch (error) {
-      console.error('Error saving video:', error);
     }
   };
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  useEffect(() => {
+    if (open && video) {
+      fetchMetrics();
+    }
+    return () => {
+      setFormData({
+        metricType: 'sprint_time',
+        value: '',
+        timestamp: '',
+        notes: '',
+      });
+      setEditingMetric(null);
+    };
+  }, [open, video]);
+
+  useEffect(() => {
+    if (editingMetric) {
+      setFormData({
+        metricType: editingMetric.metricType,
+        value: editingMetric.value.toString(),
+        timestamp: editingMetric.timestamp.toString(),
+        notes: editingMetric.notes || '',
+      });
+    }
+  }, [editingMetric]);
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!video || !videoRef.current) return;
+
+    const timestamp = Number(formData.timestamp);
+    if (timestamp > videoRef.current.duration) {
+      alert(`Timestamp cannot be greater than video duration (${Math.floor(videoRef.current.duration)} seconds)`);
+      return;
+    }
+
+    try {
+      if (editingMetric) {
+        await api.updateMetric(editingMetric.id, {
+          value: Number(formData.value),
+          notes: formData.notes,
+        });
+      } else {
+        await api.createMetric({
+          videoId: video.id,
+          metricType: formData.metricType,
+          value: Number(formData.value),
+          timestamp: timestamp,
+          notes: formData.notes,
+        });
+      }
+      fetchMetrics();
+      setFormData({
+        metricType: 'sprint_time',
+        value: '',
+        timestamp: '',
+        notes: '',
+      });
+      setEditingMetric(null);
+    } catch (error) {
+      console.error('Error saving metric:', error);
+    }
+  };
+
+  const handleDelete = async (id: number) => {
+    if (window.confirm('Are you sure you want to delete this metric?')) {
+      try {
+        await api.deleteMetric(id);
+        fetchMetrics();
+      } catch (error) {
+        console.error('Error deleting metric:', error);
+      }
+    }
+  };
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setFormData({
       ...formData,
       [e.target.name]: e.target.value,
     });
   };
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-  setFileError('');
-  if (e.target.files && e.target.files[0]) {
-    const file = e.target.files[0];
-    const fileType = file.type.toLowerCase();
-    const fileExtension = file.name.split('.').pop()?.toLowerCase();
-
-    if (
-      fileType === 'video/mp4' || 
-      fileType === 'video/quicktime' ||
-      fileExtension === 'mp4' || 
-      fileExtension === 'mov'
-    ) {
-      setFile(file);
-    } else {
-      setFile(null);
-      setFileError('Only .mp4 or .mov files are allowed');
-      e.target.value = ''; // Reset input
+  const getCurrentTimestamp = () => {
+    if (videoRef.current) {
+      setFormData({
+        ...formData,
+        timestamp: Math.floor(videoRef.current.currentTime).toString(),
+      });
     }
-  }
-};
+  };
 
   return (
-    <Dialog open={open} onClose={onClose} maxWidth="sm" fullWidth>
-      <DialogTitle>{video ? 'Edit Video' : 'Upload New Video'}</DialogTitle>
-      <form onSubmit={handleSubmit}>
-        <DialogContent>
-          <Box display="flex" flexDirection="column" gap={2}>
-            <TextField
-              name="title"
-              label="Title"
-              value={formData.title}
-              onChange={handleChange}
-              required
-              fullWidth
-            />
-            <TextField
-              select
-              name="athleteId"
-              label="Athlete"
-              value={formData.athleteId}
-              onChange={handleChange}
-              required
-              fullWidth
-            >
-              {athletes.map((athlete) => (
-                <MenuItem key={athlete.id} value={athlete.id}>
-                  {athlete.name}
-                </MenuItem>
-              ))}
-            </TextField>
-            <TextField
-              name="notes"
-              label="Notes"
-              value={formData.notes}
-              onChange={handleChange}
-              multiline
-              rows={4}
-              fullWidth
-            />
-            {!video && (
-              <>
-                <Button variant="outlined" component="label">
-                  Upload Video
-                  <input
-                    type="file"
-                    accept=".mp4,.mov,video/mp4,video/quicktime"
-                    hidden
-                    onChange={handleFileChange}
-                    required
-                  />
-                </Button>
-                {fileError && (
-                  <Typography color="error" variant="caption">
-                    {fileError}
-                  </Typography>
-                )}
-                {file && (
-                  <Typography variant="body2" color="textSecondary">
-                    Selected file: {file.name}
-                  </Typography>
-                )}
-              </>
+    <Dialog open={open} onClose={onClose} maxWidth="md" fullWidth>
+      <DialogTitle>Performance Metrics{video ? `: ${video.title}` : ''}</DialogTitle>
+      <DialogContent>
+        <Box display="flex" gap={2}>
+          <Box flex={1}>
+            {video && (
+              <video
+                ref={videoRef}
+                controls
+                src={`http://localhost:5000/api/videos/${video.id}/stream`}
+                style={{ width: '100%', marginBottom: '1rem' }}
+              />
             )}
-            {file && <Typography>{file.name}</Typography>}
+            <form onSubmit={handleSubmit}>
+              <Box display="flex" flexDirection="column" gap={2}>
+                <TextField
+                  select
+                  name="metricType"
+                  label="Metric Type"
+                  value={formData.metricType}
+                  onChange={handleChange}
+                  required
+                  fullWidth
+                  disabled={!!editingMetric}
+                >
+                  {metricTypes.map((type) => (
+                    <MenuItem key={type.value} value={type.value}>
+                      {type.label}
+                    </MenuItem>
+                  ))}
+                </TextField>
+                <TextField
+                  name="value"
+                  label="Value"
+                  type="number"
+                  value={formData.value}
+                  onChange={handleChange}
+                  required
+                  fullWidth
+                />
+                <Box display="flex" gap={1}>                <TextField
+                  name="timestamp"
+                  label="Timestamp (s)"
+                  type="number"
+                  value={formData.timestamp}
+                  onChange={handleChange}
+                  required
+                  fullWidth
+                  disabled={!!editingMetric}
+                  inputProps={{
+                    min: 0,
+                    max: videoRef.current?.duration || undefined,
+                    step: 1
+                  }}
+                  helperText={videoRef.current?.duration ? `Max: ${Math.floor(videoRef.current.duration)}s` : undefined}
+                />
+                  {!editingMetric && (
+                    <Button variant="contained" onClick={getCurrentTimestamp}>
+                      Current Time
+                    </Button>
+                  )}
+                </Box>
+                <TextField
+                  name="notes"
+                  label="Notes"
+                  value={formData.notes}
+                  onChange={handleChange}
+                  multiline
+                  rows={2}
+                  fullWidth
+                />
+                <Button type="submit" variant="contained" color="primary">
+                  {editingMetric ? 'Update Metric' : 'Add Metric'}
+                </Button>
+                {editingMetric && (
+                  <Button
+                    variant="outlined"
+                    onClick={() => {
+                      setEditingMetric(null);
+                      setFormData({
+                        metricType: 'sprint_time',
+                        value: '',
+                        timestamp: '',
+                        notes: '',
+                      });
+                    }}
+                  >
+                    Cancel Edit
+                  </Button>
+                )}
+              </Box>
+            </form>
           </Box>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={onClose}>Cancel</Button>
-          <Button type="submit" variant="contained" color="primary">
-            {video ? 'Save Changes' : 'Upload'}
-          </Button>
-        </DialogActions>
-      </form>
+          <Box flex={1}>
+            <Typography variant="h6" gutterBottom>
+              Recorded Metrics
+            </Typography>
+            <List>
+              {metrics.map((metric) => (
+                <ListItem
+                  key={metric.id}
+                  secondaryAction={
+                    <Box>
+                      <IconButton onClick={() => setEditingMetric(metric)}>
+                        <EditIcon />
+                      </IconButton>
+                      <IconButton onClick={() => handleDelete(metric.id)}>
+                        <DeleteIcon />
+                      </IconButton>
+                    </Box>
+                  }
+                >
+                  <ListItemText
+                    primary={
+                      <Typography>
+                        {metricTypes.find((t) => t.value === metric.metricType)?.label}:{' '}
+                        {metric.value}
+                        {metric.metricType === 'sprint_time' ? 's' : 'cm'}
+                      </Typography>
+                    }
+                    secondary={
+                      <>
+                        <Typography variant="body2">
+                          Timestamp: {metric.timestamp}s
+                        </Typography>
+                        {metric.notes && (
+                          <Typography variant="body2">Notes: {metric.notes}</Typography>
+                        )}
+                      </>
+                    }
+                  />
+                </ListItem>
+              ))}
+            </List>
+          </Box>
+        </Box>
+      </DialogContent>
+      <DialogActions>
+        <Button onClick={onClose}>Close</Button>
+      </DialogActions>
     </Dialog>
   );
 };
