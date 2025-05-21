@@ -13,6 +13,7 @@ import {
 } from '@mui/material';
 import { AthleteList } from './components/athletes/AthleteList';
 import { AthleteForm } from './components/athletes/AthleteForm';
+import { AthleteProfile } from './components/athletes/AthleteProfile';
 import { VideoList } from './components/videos/VideoList';
 import { VideoForm } from './components/videos/VideoForm';
 import { Athlete, Video } from './types';
@@ -56,7 +57,6 @@ function App() {
 
   const handleAthleteSuccess = () => {
     setAthleteFormOpen(false);
-    // If we have an AthleteList mounted, it will refetch
     const event = new Event('refetchAthletes');
     window.dispatchEvent(event);
   };
@@ -97,6 +97,7 @@ function App() {
                   />
                 }
               />
+              <Route path="/athlete/:id" element={<AthleteProfile />} />
               <Route
                 path="/videos"
                 element={

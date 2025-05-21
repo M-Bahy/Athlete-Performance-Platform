@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import {
   Box,
   Button,
@@ -19,7 +20,6 @@ import {
 } from '@mui/icons-material';
 import { Athlete } from '../../types';
 import * as api from '../../services/api';
-import { AthleteProfile } from './AthleteProfile';
 
 interface Props {
   onAdd: () => void;
@@ -28,8 +28,7 @@ interface Props {
 
 export const AthleteList: React.FC<Props> = ({ onAdd, onEdit }) => {
   const [athletes, setAthletes] = useState<Athlete[]>([]);
-  const [selectedAthlete, setSelectedAthlete] = useState<Athlete | null>(null);
-  const [profileOpen, setProfileOpen] = useState(false);
+  const navigate = useNavigate();
 
   const fetchAthletes = async () => {
     try {
@@ -97,10 +96,7 @@ export const AthleteList: React.FC<Props> = ({ onAdd, onEdit }) => {
                 <TableCell align="right">
                   <Button
                     startIcon={<ProfileIcon />}
-                    onClick={() => {
-                      setSelectedAthlete(athlete);
-                      setProfileOpen(true);
-                    }}
+                    onClick={() => navigate(`/athlete/${athlete.id}`)}
                     color="info"
                   >
                     Profile
@@ -125,17 +121,6 @@ export const AthleteList: React.FC<Props> = ({ onAdd, onEdit }) => {
           </TableBody>
         </Table>
       </TableContainer>
-
-      {selectedAthlete && (
-        <AthleteProfile
-          open={profileOpen}
-          onClose={() => {
-            setProfileOpen(false);
-            setSelectedAthlete(null);
-          }}
-          athlete={selectedAthlete}
-        />
-      )}
     </Box>
   );
 };
