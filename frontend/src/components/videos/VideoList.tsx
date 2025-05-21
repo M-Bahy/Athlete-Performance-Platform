@@ -9,6 +9,7 @@ import {
   Typography,
 } from '@mui/material';
 import { Add as AddIcon, Edit as EditIcon, Delete as DeleteIcon } from '@mui/icons-material';
+import EmojiEventsIcon from '@mui/icons-material/EmojiEvents';
 import { Video } from '../../types';
 import * as api from '../../services/api';
 
@@ -39,6 +40,8 @@ export const VideoList: React.FC<Props> = ({ onAdd, onEdit }) => {
       }
     }
   };
+
+  const handleUserInputPerformanceMetrics = async (id: number) => {}
 
   useEffect(() => {
     fetchVideos();
@@ -113,6 +116,14 @@ export const VideoList: React.FC<Props> = ({ onAdd, onEdit }) => {
                 </Typography>
               </CardContent>
               <CardActions>
+                <Button
+                  size="small"
+                  color="primary"
+                  startIcon={<EmojiEventsIcon />}
+                  onClick={() => handleUserInputPerformanceMetrics(video.id)}
+                >
+                  Performance
+                </Button>
                 <Button
                   size="small"
                   startIcon={<EditIcon />}
