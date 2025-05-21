@@ -11,9 +11,15 @@ import {
   TableRow,
   Typography,
 } from '@mui/material';
-import { Add as AddIcon, Edit as EditIcon, Delete as DeleteIcon } from '@mui/icons-material';
+import { 
+  Add as AddIcon, 
+  Edit as EditIcon, 
+  Delete as DeleteIcon,
+  AccountCircle as ProfileIcon
+} from '@mui/icons-material';
 import { Athlete } from '../../types';
 import * as api from '../../services/api';
+import { AthleteProfile } from './AthleteProfile';
 
 interface Props {
   onAdd: () => void;
@@ -22,6 +28,8 @@ interface Props {
 
 export const AthleteList: React.FC<Props> = ({ onAdd, onEdit }) => {
   const [athletes, setAthletes] = useState<Athlete[]>([]);
+  const [selectedAthlete, setSelectedAthlete] = useState<Athlete | null>(null);
+  const [profileOpen, setProfileOpen] = useState(false);
 
   const fetchAthletes = async () => {
     try {
@@ -88,6 +96,16 @@ export const AthleteList: React.FC<Props> = ({ onAdd, onEdit }) => {
                 <TableCell>{athlete.age}</TableCell>
                 <TableCell align="right">
                   <Button
+                    startIcon={<ProfileIcon />}
+                    onClick={() => {
+                      setSelectedAthlete(athlete);
+                      setProfileOpen(true);
+                    }}
+                    color="info"
+                  >
+                    Profile
+                  </Button>
+                  <Button
                     startIcon={<EditIcon />}
                     onClick={() => onEdit(athlete)}
                     color="primary"
@@ -107,6 +125,17 @@ export const AthleteList: React.FC<Props> = ({ onAdd, onEdit }) => {
           </TableBody>
         </Table>
       </TableContainer>
+
+      {selectedAthlete && (
+        <AthleteProfile
+          open={profileOpen}
+          onClose={() => {
+            setProfileOpen(false);
+            setSelectedAthlete(null);
+          }}
+          athlete={selectedAthlete}
+        />
+      )}
     </Box>
   );
 };
