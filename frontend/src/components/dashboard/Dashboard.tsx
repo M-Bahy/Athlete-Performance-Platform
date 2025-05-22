@@ -148,15 +148,17 @@ export const Dashboard = () => {
         Athletes Performance Dashboard
       </Typography>
 
-      <Paper sx={{ p: 2, mb: 3 }}>
-        <Grid container spacing={3} alignItems="center">
-          <Grid item xs={12} sm={4} {...({} as any)}>
+           <Paper sx={{ p: 2, mb: 3 }}>
+        <Grid container spacing={3}>
+          {/* Sport Filter - Make it wider and on its own row */}
+          <Grid item xs={12} sm={12} md={6} lg={4} {...({} as any)}>
             <TextField
               select
               fullWidth
               label="Filter by Sport"
               value={selectedSport}
               onChange={(e) => setSelectedSport(e.target.value)}
+              sx={{ minWidth: 200 }} // Add minimum width
             >
               <MenuItem value="">All Sports</MenuItem>
               {uniqueSports.map((sport) => (
@@ -166,10 +168,11 @@ export const Dashboard = () => {
               ))}
             </TextField>
           </Grid>
-          <Grid item xs={12} sm={4} {...({} as any)}>
-
+      
+          {/* Date Pickers */}
+          <Grid item xs={12} sm={12} {...({} as any)}>
             <LocalizationProvider dateAdapter={AdapterDateFns}>
-              <Stack direction="row" spacing={2}>
+              <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
                 <DatePicker
                   label="Start Date"
                   value={dateRange.start}
