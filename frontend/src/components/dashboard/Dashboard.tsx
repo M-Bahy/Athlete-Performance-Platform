@@ -255,12 +255,6 @@ export const Dashboard = () => {
                         <Typography variant="caption" color="text.secondary" sx={{ mx: 1 }}>
                           {format(new Date(video.uploadDate), 'MMM d, yyyy')}
                         </Typography>
-                        <IconButton 
-                          size="small" 
-                          onClick={() => navigate(`/videos/${video.id}`)}
-                        >
-                          <PlayIcon />
-                        </IconButton>
                       </Stack>
                     </Paper>
                   ))}
@@ -268,18 +262,11 @@ export const Dashboard = () => {
               </CardContent>
               <CardActions>
                 <Button 
-                  size="small" 
-                  startIcon={<ProfileIcon />}
-                  onClick={() => navigate(`/athlete/${athlete.id}`)}
-                >
-                  View Full Profile
-                </Button>
-                <Button 
                   size="small"
                   startIcon={<TimelineIcon />}
                   onClick={() => navigate(`/athlete/${athlete.id}`)}
                 >
-                  All Performance Data
+                  More Insights
                 </Button>
               </CardActions>
             </Card>

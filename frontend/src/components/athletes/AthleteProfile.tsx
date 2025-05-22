@@ -108,7 +108,7 @@ export const AthleteProfile: React.FC = () => {
   return (
     <Container maxWidth="lg" sx={{ mt: 4 }}>
       <Box mb={4}>
-        <IconButton onClick={() => navigate('/athletes')} sx={{ mb: 2 }}>
+        <IconButton onClick={() => navigate(-1)} sx={{ mr: 2 }}>
           <ArrowBackIcon /> 
         </IconButton>
         <Typography variant="h4" component="h1" gutterBottom>
