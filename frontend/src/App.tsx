@@ -9,7 +9,6 @@ import {
   Button,
   ThemeProvider,
   createTheme,
-  Stack,
   IconButton,
   Typography,
 } from '@mui/material';
@@ -17,6 +16,7 @@ import HomeIcon from '@mui/icons-material/Home';
 import SportsKabaddiIcon from '@mui/icons-material/SportsKabaddi';
 import PlayCircleIcon from '@mui/icons-material/PlayCircle';
 import LogoutIcon from '@mui/icons-material/Logout';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import { AthleteList } from './components/athletes/AthleteList';
 import { AthleteForm } from './components/athletes/AthleteForm';
 import { AthleteProfile } from './components/athletes/AthleteProfile';
@@ -82,7 +82,7 @@ function MainApp() {
     <Router>
       <Box sx={{ flexGrow: 1 }}>
         {isAuthenticated && (
-          <AppBar position="static">
+                    <AppBar position="static">
             <Toolbar>
               <Button 
                 color="inherit" 
@@ -93,33 +93,34 @@ function MainApp() {
               >
                 Dashboard
               </Button>
+              <Button 
+                color="inherit" 
+                component={Link} 
+                to="/athletes"
+                startIcon={<SportsKabaddiIcon />}
+                sx={{ mr: 2 }}
+              >
+                Athletes
+              </Button>
+              <Button 
+                color="inherit" 
+                component={Link} 
+                to="/videos"
+                startIcon={<PlayCircleIcon />}
+                sx={{ mr: 2 }}
+              >
+                Videos
+              </Button>
               <Box sx={{ flexGrow: 1 }} />
-              <Stack direction="row" spacing={1}>
-                <Button 
-                  color="inherit" 
-                  component={Link} 
-                  to="/athletes"
-                  startIcon={<SportsKabaddiIcon />}
-                >
-                  Athletes
-                </Button>
-                <Button 
-                  color="inherit" 
-                  component={Link} 
-                  to="/videos"
-                  startIcon={<PlayCircleIcon />}
-                >
-                  Videos
-                </Button>
-                <Box sx={{ display: 'flex', alignItems: 'center', ml: 2 }}>
-                  <Typography variant="body2" sx={{ mr: 1 }}>
-                    {username}
-                  </Typography>
-                  <IconButton color="inherit" onClick={logout} size="small">
-                    <LogoutIcon />
-                  </IconButton>
-                </Box>
-              </Stack>
+              <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                <AccountCircleIcon sx={{ mr: 0.5 }} />
+                <Typography variant="body2" sx={{ mr: 1 }}>
+                  {username}
+                </Typography>
+                <IconButton color="inherit" onClick={logout} size="small">
+                  <LogoutIcon />
+                </IconButton>
+              </Box>
             </Toolbar>
           </AppBar>
         )}
