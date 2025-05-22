@@ -1,12 +1,11 @@
 import React, { useState } from 'react';
-import { BrowserRouter as Router, Routes, Route, Link, useLocation } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import {
   AppBar,
   Box,
   Container,
   CssBaseline,
   Toolbar,
-  Typography,
   Button,
   ThemeProvider,
   createTheme,
@@ -15,7 +14,6 @@ import {
 import HomeIcon from '@mui/icons-material/Home';
 import SportsKabaddiIcon from '@mui/icons-material/SportsKabaddi';
 import PlayCircleIcon from '@mui/icons-material/PlayCircle';
-import FitnessCenterIcon from '@mui/icons-material/FitnessCenter';
 import { AthleteList } from './components/athletes/AthleteList';
 import { AthleteForm } from './components/athletes/AthleteForm';
 import { AthleteProfile } from './components/athletes/AthleteProfile';

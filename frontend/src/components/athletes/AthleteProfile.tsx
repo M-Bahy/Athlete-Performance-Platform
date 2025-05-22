@@ -71,6 +71,7 @@ export const AthleteProfile: React.FC = () => {
 
   useEffect(() => {
     fetchAthleteData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id]);
 
   if (loading) {

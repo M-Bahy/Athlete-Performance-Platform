@@ -13,11 +13,8 @@ import {
   ListItem,
   ListItemText,
   IconButton,
-  Card,
-  CardContent,
 } from '@mui/material';
 import {
-  Add as AddIcon,
   Edit as EditIcon,
   Delete as DeleteIcon,
 } from '@mui/icons-material';
@@ -74,6 +71,7 @@ export const PerformanceMetrics: React.FC<Props> = ({
       });
       setEditingMetric(null);
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [open, video]);
 
   useEffect(() => {
