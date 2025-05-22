@@ -11,8 +11,7 @@ A comprehensive web-based platform that allows coaches to upload performance vid
 - [API Usage Examples](#api-usage-examples)
 - [Project Structure](#project-structure)
 
-<details>
-<summary><h2>Tech Stack</h2></summary>
+## Tech Stack
 
 ### Backend
 - **Node.js** with **Express** (v5.1.0) - Fast, unopinionated web framework for Node.js
@@ -31,7 +30,6 @@ A comprehensive web-based platform that allows coaches to upload performance vid
 - **React Router** (v7.6.0) - For navigation and routing
 - **Axios** (v1.9.0) - For HTTP requests
 - **date-fns** (v4.1.0) - For date manipulation
-</details>
 
 ## Features
 
@@ -43,8 +41,7 @@ A comprehensive web-based platform that allows coaches to upload performance vid
 - Dashboard for coaches to review athlete performance
 - RESTful API for all operations
 
-<details>
-<summary><h2>Database Schema</h2></summary>
+## Database Schema
 
 The application uses PostgreSQL with Sequelize ORM and consists of the following models:
 
@@ -83,10 +80,8 @@ notes: String (Optional)
 createdAt: Date
 updatedAt: Date
 ```
-</details>
 
-<details>
-<summary><h2>REST API Endpoints</h2></summary>
+## REST API Endpoints
 
 ### Athletes
 
@@ -117,7 +112,6 @@ updatedAt: Date
 | POST   | /api/metrics | Create a new performance metric |
 | PUT    | /api/metrics/:id | Update a performance metric |
 | DELETE | /api/metrics/:id | Delete a performance metric |
-</details>
 
 ## Setup Instructions
 
@@ -208,8 +202,7 @@ If you're not using Docker, you'll need to set up PostgreSQL locally:
 2. Create a database named `athlete_platform`
 3. Configure your database connection in the backend `.env` file
 
-<details>
-<summary><h2>API Usage Examples</h2></summary>
+## API Usage Examples
 
 ### Athletes API
 
@@ -264,10 +257,8 @@ curl -X POST http://localhost:5000/api/metrics \
 ```bash
 curl http://localhost:5000/api/metrics/video/1
 ```
-</details>
 
-<details>
-<summary><h2>Project Structure</h2></summary>
+## Project Structure
 
 ```
 ├── backend/                 # Node.js Express backend
@@ -293,4 +284,3 @@ curl http://localhost:5000/api/metrics/video/1
 ├── docker-compose.yaml      # Docker Compose configuration
 └── README.md                # Documentation
 ```
-</details>
