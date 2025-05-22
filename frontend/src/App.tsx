@@ -78,45 +78,38 @@ function App() {
       <CssBaseline />
       <Router>
         <Box sx={{ flexGrow: 1 }}>
-          <AppBar position="static">
+            <AppBar position="static">
             <Toolbar>
-              <FitnessCenterIcon sx={{ mr: 2 }} />
-              <Typography
-                variant="h6"
-                component={Link}
-                to="/"
-                sx={{ flexGrow: 1, color: 'inherit', textDecoration: 'none' }}
+              <Button 
+              color="inherit" 
+              component={Link} 
+              to="/"
+              startIcon={<HomeIcon />}
+              sx={{ mr: 2 }}
               >
-                Athlete Performance Platform
-              </Typography>
+              Dashboard
+              </Button>
+              <Box sx={{ flexGrow: 1 }} />
               <Stack direction="row" spacing={1}>
-                <Button 
-                  color="inherit" 
-                  component={Link} 
-                  to="/"
-                  startIcon={<HomeIcon />}
-                >
-                  Dashboard
-                </Button>
-                <Button 
-                  color="inherit" 
-                  component={Link} 
-                  to="/athletes"
-                  startIcon={<SportsKabaddiIcon />}
-                >
-                  Athletes
-                </Button>
-                <Button 
-                  color="inherit" 
-                  component={Link} 
-                  to="/videos"
-                  startIcon={<PlayCircleIcon />}
-                >
-                  Videos
-                </Button>
+              <Button 
+                color="inherit" 
+                component={Link} 
+                to="/athletes"
+                startIcon={<SportsKabaddiIcon />}
+              >
+                Athletes
+              </Button>
+              <Button 
+                color="inherit" 
+                component={Link} 
+                to="/videos"
+                startIcon={<PlayCircleIcon />}
+              >
+                Videos
+              </Button>
               </Stack>
             </Toolbar>
-          </AppBar>
+            </AppBar>
 
           <Container maxWidth="lg" sx={{ mt: 4 }}>
             <Routes>
