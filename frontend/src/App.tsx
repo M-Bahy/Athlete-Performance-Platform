@@ -16,6 +16,7 @@ import { AthleteForm } from './components/athletes/AthleteForm';
 import { AthleteProfile } from './components/athletes/AthleteProfile';
 import { VideoList } from './components/videos/VideoList';
 import { VideoForm } from './components/videos/VideoForm';
+import { Dashboard } from './components/dashboard/Dashboard';
 import { Athlete, Video } from './types';
 
 const theme = createTheme({
@@ -74,10 +75,15 @@ function App() {
         <Box sx={{ flexGrow: 1 }}>
           <AppBar position="static">
             <Toolbar>
-              <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+                <Typography
+                variant="h6"
+                component={Link}
+                to="/"
+                sx={{ flexGrow: 1, color: 'inherit', textDecoration: 'none' }}
+                >
                 Athlete Performance Platform
-              </Typography>
-              <Button color="inherit" component={Link} to="/">
+                </Typography>
+              <Button color="inherit" component={Link} to="/athletes">
                 Athletes
               </Button>
               <Button color="inherit" component={Link} to="/videos">
@@ -88,8 +94,9 @@ function App() {
 
           <Container maxWidth="lg" sx={{ mt: 4 }}>
             <Routes>
+              <Route path="/" element={<Dashboard />} />
               <Route
-                path="/"
+                path="/athletes"
                 element={
                   <AthleteList
                     onAdd={handleAddAthlete}
