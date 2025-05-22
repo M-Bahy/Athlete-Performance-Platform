@@ -160,7 +160,6 @@ export const Dashboard = () => {
       <Paper sx={{ p: 2, mb: 3 }}>
         <Grid container spacing={3} alignItems="center">
           <Grid item xs={12} sm={12} {...({} as any)}>
-            <Stack direction="row" spacing={2} alignItems="center">
               <TextField
                 select
                 fullWidth
@@ -176,17 +175,8 @@ export const Dashboard = () => {
                   </MenuItem>
                 ))}
               </TextField>
-              <Button 
-                variant="outlined" 
-                onClick={handleClearFilters}
-                size="small"
-              >
-                Clear Filters
-              </Button>
-            </Stack>
           </Grid>
       
-          {/* Date Pickers */}
           <Grid item xs={12} sm={12} {...({} as any)}>
             <LocalizationProvider dateAdapter={AdapterDateFns}>
               <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
@@ -211,13 +201,18 @@ export const Dashboard = () => {
               </Stack>
             </LocalizationProvider>
           </Grid>
+           <Button 
+                variant="outlined" 
+                onClick={handleClearFilters}
+                size="small"
+              >
+                Clear Filters
+              </Button>
         </Grid>
       </Paper>
 
       <Grid container spacing={3}>
         {filteredAthletes.map((athlete) => (
-          // <Grid item xs={12} sm={4} {...({} as any)}>
-
           <Grid item xs={12} sm={6} md={4} key={athlete.id} {...({} as any)}>
             <Card>
               <CardContent>
