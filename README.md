@@ -10,7 +10,6 @@ A comprehensive web-based platform that allows coaches to upload performance vid
 - [Setup Instructions](#setup-instructions)
 - [API Usage Examples](#api-usage-examples)
 - [Project Structure](#project-structure)
-- [Contributing](#contributing)
 
 ## Tech Stack
 
@@ -126,7 +125,7 @@ updatedAt: Date
 
 1. Clone the repository:
 ```bash
-git clone <repository-url>
+git clone https://github.com/M-Bahy/Mini-Platform-for-Athlete-Performance-Insights.git
 cd Mini-Platform-for-Athlete-Performance-Insights
 ```
 
@@ -285,11 +284,3 @@ curl http://localhost:5000/api/metrics/video/1
 ├── docker-compose.yaml      # Docker Compose configuration
 └── README.md                # Documentation
 ```
-
-## Contributing
-
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add some amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
