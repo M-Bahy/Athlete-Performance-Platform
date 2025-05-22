@@ -134,6 +134,15 @@ export const Dashboard = () => {
     setFilteredAthletes(filtered);
   }, [selectedSport, dateRange, athletes]);
 
+  const handleClearFilters = () => {
+    setSelectedSport('');
+    setDateRange({
+      start: subDays(new Date(), 30),
+      end: new Date(),
+    });
+    setFilteredAthletes(athletes);
+  };
+
   if (loading) {
     return (
       <Box p={3}>
@@ -148,25 +157,33 @@ export const Dashboard = () => {
         Athletes Performance Dashboard
       </Typography>
 
-           <Paper sx={{ p: 2, mb: 3 }}>
-        <Grid container spacing={3}>
-          {/* Sport Filter - Make it wider and on its own row */}
-          <Grid item xs={12} sm={12} md={6} lg={4} {...({} as any)}>
-            <TextField
-              select
-              fullWidth
-              label="Filter by Sport"
-              value={selectedSport}
-              onChange={(e) => setSelectedSport(e.target.value)}
-              sx={{ minWidth: 200 }} // Add minimum width
-            >
-              <MenuItem value="">All Sports</MenuItem>
-              {uniqueSports.map((sport) => (
-                <MenuItem key={sport} value={sport}>
-                  {sport}
-                </MenuItem>
-              ))}
-            </TextField>
+      <Paper sx={{ p: 2, mb: 3 }}>
+        <Grid container spacing={3} alignItems="center">
+          <Grid item xs={12} sm={12} {...({} as any)}>
+            <Stack direction="row" spacing={2} alignItems="center">
+              <TextField
+                select
+                fullWidth
+                label="Filter by Sport"
+                value={selectedSport}
+                onChange={(e) => setSelectedSport(e.target.value)}
+                sx={{ minWidth: 200 }}
+              >
+                <MenuItem value="">All Sports</MenuItem>
+                {uniqueSports.map((sport) => (
+                  <MenuItem key={sport} value={sport}>
+                    {sport}
+                  </MenuItem>
+                ))}
+              </TextField>
+              <Button 
+                variant="outlined" 
+                onClick={handleClearFilters}
+                size="small"
+              >
+                Clear Filters
+              </Button>
+            </Stack>
           </Grid>
       
           {/* Date Pickers */}
