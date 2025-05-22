@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Link, useLocation } from 'react-router-dom';
 import {
   AppBar,
   Box,
@@ -10,7 +10,12 @@ import {
   Button,
   ThemeProvider,
   createTheme,
+  Stack,
 } from '@mui/material';
+import HomeIcon from '@mui/icons-material/Home';
+import SportsKabaddiIcon from '@mui/icons-material/SportsKabaddi';
+import PlayCircleIcon from '@mui/icons-material/PlayCircle';
+import FitnessCenterIcon from '@mui/icons-material/FitnessCenter';
 import { AthleteList } from './components/athletes/AthleteList';
 import { AthleteForm } from './components/athletes/AthleteForm';
 import { AthleteProfile } from './components/athletes/AthleteProfile';
@@ -75,20 +80,41 @@ function App() {
         <Box sx={{ flexGrow: 1 }}>
           <AppBar position="static">
             <Toolbar>
-                <Typography
+              <FitnessCenterIcon sx={{ mr: 2 }} />
+              <Typography
                 variant="h6"
                 component={Link}
                 to="/"
                 sx={{ flexGrow: 1, color: 'inherit', textDecoration: 'none' }}
-                >
+              >
                 Athlete Performance Platform
-                </Typography>
-              <Button color="inherit" component={Link} to="/athletes">
-                Athletes
-              </Button>
-              <Button color="inherit" component={Link} to="/videos">
-                Videos
-              </Button>
+              </Typography>
+              <Stack direction="row" spacing={1}>
+                <Button 
+                  color="inherit" 
+                  component={Link} 
+                  to="/"
+                  startIcon={<HomeIcon />}
+                >
+                  Dashboard
+                </Button>
+                <Button 
+                  color="inherit" 
+                  component={Link} 
+                  to="/athletes"
+                  startIcon={<SportsKabaddiIcon />}
+                >
+                  Athletes
+                </Button>
+                <Button 
+                  color="inherit" 
+                  component={Link} 
+                  to="/videos"
+                  startIcon={<PlayCircleIcon />}
+                >
+                  Videos
+                </Button>
+              </Stack>
             </Toolbar>
           </AppBar>
 

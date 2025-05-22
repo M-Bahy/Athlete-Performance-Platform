@@ -1,7 +1,7 @@
 export const Dashboard = () => {
     return (
-        <div>
-            <h1>Dashboard</h1>
+        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
+            <h1>Athlete Performance Platform</h1>
         </div>
     );
 }
