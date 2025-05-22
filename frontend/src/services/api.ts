@@ -3,34 +3,57 @@ import { Athlete, Video, PerformanceMetric } from '../types';
 
 const API_URL = 'http://localhost:5000/api';
 
+// Create an axios instance with interceptors
+const api = axios.create({
+  baseURL: API_URL,
+});
+
+// Add a request interceptor to include auth token (for future use)
+api.interceptors.request.use(
+  (config) => {
+    const token = localStorage.getItem('token');
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
+    return config;
+  },
+  (error) => Promise.reject(error)
+);
+
 // Athlete Services
-export const getAthletes = () => axios.get<Athlete[]>(`${API_URL}/athletes`);
-export const getAthlete = (id: number) => axios.get<Athlete>(`${API_URL}/athletes/${id}`);
+export const getAthletes = () => api.get<Athlete[]>(`/athletes`);
+export const getAthlete = (id: number) => api.get<Athlete>(`/athletes/${id}`);
 export const createAthlete = (athlete: Omit<Athlete, 'id'>) => 
-  axios.post<Athlete>(`${API_URL}/athletes`, athlete);
+  api.post<Athlete>(`/athletes`, athlete);
 export const updateAthlete = (id: number, athlete: Partial<Athlete>) =>
-  axios.put<Athlete>(`${API_URL}/athletes/${id}`, athlete);
+  api.put<Athlete>(`/athletes/${id}`, athlete);
 export const deleteAthlete = (id: number) => 
-  axios.delete(`${API_URL}/athletes/${id}`);
+  api.delete(`/athletes/${id}`);
 
 // Video Services
-export const getVideos = () => axios.get<Video[]>(`${API_URL}/videos`);
-export const getVideo = (id: number) => axios.get<Video>(`${API_URL}/videos/${id}`);
+export const getVideos = () => api.get<Video[]>(`/videos`);
+export const getVideo = (id: number) => api.get<Video>(`/videos/${id}`);
 export const uploadVideo = (formData: FormData) => 
-  axios.post<Video>(`${API_URL}/videos`, formData, {
+  api.post<Video>(`/videos`, formData, {
     headers: { 'Content-Type': 'multipart/form-data' }
   });
 export const updateVideo = (id: number, video: Partial<Video>) =>
-  axios.put<Video>(`${API_URL}/videos/${id}`, video);
+  api.put<Video>(`/videos/${id}`, video);
 export const deleteVideo = (id: number) => 
-  axios.delete(`${API_URL}/videos/${id}`);
+  api.delete(`/videos/${id}`);
 
 // Performance Metric Services
 export const getMetricsByVideo = (videoId: number) => 
-  axios.get<PerformanceMetric[]>(`${API_URL}/metrics/video/${videoId}`);
+  api.get<PerformanceMetric[]>(`/metrics/video/${videoId}`);
 export const createMetric = (metric: Omit<PerformanceMetric, 'id'>) =>
-  axios.post<PerformanceMetric>(`${API_URL}/metrics`, metric);
+  api.post<PerformanceMetric>(`/metrics`, metric);
 export const updateMetric = (id: number, metric: Partial<PerformanceMetric>) =>
-  axios.put<PerformanceMetric>(`${API_URL}/metrics/${id}`, metric);
+  api.put<PerformanceMetric>(`/metrics/${id}`, metric);
 export const deleteMetric = (id: number) =>
-  axios.delete(`${API_URL}/metrics/${id}`);
+  api.delete(`/metrics/${id}`);
+
+// Auth Service (for future backend implementation)
+export const login = (username: string, password: string) => 
+  api.post('/auth/login', { username, password });
+export const logout = () => 
+  api.post('/auth/logout');
