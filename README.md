@@ -33,7 +33,7 @@ A comprehensive web-based platform that allows coaches to upload performance vid
 
 ## Features
 
-- User authentication (coaches) 
+- Authentication (admin) 
 - Athlete management (adding, editing, viewing athletes)
 - Video upload and management
 - Performance metrics tracking and analysis
@@ -131,7 +131,7 @@ cd Mini-Platform-for-Athlete-Performance-Insights
 
 2. Start the application using Docker Compose:
 ```bash
-docker-compose up -d
+docker compose up -d
 ```
 
 This will:
