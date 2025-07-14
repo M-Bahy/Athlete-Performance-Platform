@@ -1,6 +1,6 @@
-# Mini-Platform for Athlete Performance Insights
+# Athlete Performance Platform
 
-A comprehensive web-based platform that allows coaches to upload performance videos, tag athletes, and review key performance metrics. This application simulates a lightweight analytics platform for sports teams and individual athletes.
+A comprehensive web-based platform that allows coaches to upload performance videos, tag athletes, and review key performance metrics. This application simulates an analytic platform for sports teams and individual athletes.
 
 ## Table of Contents
 - [Tech Stack](#tech-stack)
